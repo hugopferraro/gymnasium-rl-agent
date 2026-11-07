@@ -127,6 +127,13 @@ def train(config: ExperimentConfig, *, run_dir: str | Path | None = None) -> Tra
                         evaluations_without_improvement = 0
                     else:
                         evaluations_without_improvement += 1
+                    print(
+                        f"[train] episode={episode}/{config.training.episodes} "
+                        f"steps={total_steps} return={episode_return:.1f} "
+                        f"validation={last_evaluation.mean_return:.1f} "
+                        f"best={best_score:.1f}",
+                        flush=True,
+                    )
 
                 mean_loss = float(np.mean(losses)) if losses else float("nan")
                 csv_writer.writerow(

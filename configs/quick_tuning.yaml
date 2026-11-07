@@ -1,0 +1,35 @@
+name: lunar-lander-double-dqn-quick
+
+environment:
+  id: LunarLander-v3
+  max_episode_steps: 1000
+
+agent:
+  hidden_layers: [128, 128]
+  gamma: 0.99
+  learning_rate: 0.0005
+  batch_size: 64
+  replay_capacity: 100000
+  warmup_steps: 5000
+  epsilon_start: 1.0
+  epsilon_end: 0.05
+  epsilon_decay_steps: 75000
+  target_update_steps: 1000
+  gradient_clip_norm: 10.0
+
+# The final model produced from best_config.yaml uses this larger budget.
+training:
+  seed: 42
+  episodes: 500
+  evaluation_interval: 25
+  evaluation_episodes: 5
+  checkpoint_min_score: 200.0
+  early_stopping_evaluations: 3
+  output_dir: artifacts/runs
+
+# Reduced search chosen because the complete experiment would miss the presentation deadline.
+tuning:
+  trials: 3
+  seed: 2026
+  episodes_per_trial: 120
+  validation_seeds: [1001, 1002, 1003]

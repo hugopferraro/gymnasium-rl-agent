@@ -120,6 +120,16 @@ O comando executa 12 trials e, ao terminar, informa a pasta criada. Dentro dela 
 `tuning_results.csv`, `best_trial.json` e `best_config.yaml`. O último arquivo combina os
 hiperparâmetros vencedores com o orçamento completo de 1.000 episódios para o treinamento final.
 
+Se houver menos de quatro horas disponíveis, use a configuração emergencial documentada. Ela
+executa 3 trials de 120 episódios e gera uma configuração final de 500 episódios:
+
+```bash
+uv run gymnasium-rl-agent tune --config configs/quick_tuning.yaml
+```
+
+Essa busca reduzida deve ser declarada no relatório e no vídeo; ela não é equivalente ao
+experimento completo de 12 trials.
+
 ### 2. Treinar o modelo final
 
 Use exatamente o `next_command` mostrado ao final do tuning. Exemplo:

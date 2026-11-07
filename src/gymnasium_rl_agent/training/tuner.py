@@ -53,6 +53,7 @@ def tune(config: ExperimentConfig, *, output_dir: str | Path | None = None) -> P
     best_agent: AgentConfig | None = None
 
     for trial in range(config.tuning.trials):
+        print(f"[tune] starting trial {trial + 1}/{config.tuning.trials}", flush=True)
         trial_config = _sample_config(config, rng, trial)
         result = train(trial_config, run_dir=root / f"trial-{trial:02d}")
         model = tf.keras.models.load_model(result.model_path)
@@ -71,6 +72,11 @@ def tune(config: ExperimentConfig, *, output_dir: str | Path | None = None) -> P
             "model_path": str(result.model_path),
         }
         rows.append(row)
+        print(
+            f"[tune] completed trial {trial + 1}/{config.tuning.trials}: "
+            f"mean_return={evaluation.mean_return:.1f}",
+            flush=True,
+        )
         if evaluation.mean_return > best_score:
             best_score = evaluation.mean_return
             best_trial = trial
