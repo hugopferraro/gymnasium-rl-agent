@@ -1,2 +1,3 @@
-def main() -> None:
-    print("Hello from gymnasium-rl-agent!")
+"""Gymnasium RL Agent package."""
+
+__version__ = "0.1.0"

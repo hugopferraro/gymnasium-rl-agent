@@ -1,0 +1,33 @@
+name: lunar-lander-double-dqn
+
+environment:
+  id: LunarLander-v3
+  max_episode_steps: 1000
+
+agent:
+  hidden_layers: [128, 128]
+  gamma: 0.99
+  learning_rate: 0.0005
+  batch_size: 64
+  replay_capacity: 100000
+  warmup_steps: 5000
+  epsilon_start: 1.0
+  epsilon_end: 0.05
+  epsilon_decay_steps: 100000
+  target_update_steps: 1000
+  gradient_clip_norm: 10.0
+
+training:
+  seed: 42
+  episodes: 1000
+  evaluation_interval: 25
+  evaluation_episodes: 10
+  checkpoint_min_score: 200.0
+  early_stopping_evaluations: 5
+  output_dir: artifacts/runs
+
+tuning:
+  trials: 12
+  seed: 2026
+  episodes_per_trial: 500
+  validation_seeds: [1001, 1002, 1003, 1004, 1005]

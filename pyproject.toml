@@ -1,19 +1,56 @@
 [project]
 name = "gymnasium-rl-agent"
 version = "0.1.0"
-description = "Add your description here"
+description = "Agente Double DQN reproduzível para o ambiente LunarLander-v3"
 readme = "README.md"
 authors = [
     { name = "hugopferraro", email = "hugopferraro@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "gymnasium>=1.4.0",
+    "gymnasium[box2d]>=1.4.0,<2",
+    "matplotlib>=3.10,<4",
+    "numpy>=2.0,<3",
+    "pandas>=2.2,<4",
+    "pyyaml>=6.0,<7",
+    "tensorboard>=2.20,<2.22",
+    "tensorflow>=2.20,<2.22",
+]
+
+[project.optional-dependencies]
+gpu = ["tensorflow[and-cuda]>=2.20,<2.22; sys_platform == 'linux'"]
+video = ["moviepy>=2.2,<3"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15,<2",
+    "pytest>=8.3,<10",
+    "pytest-cov>=6,<8",
+    "ruff>=0.11,<1",
+    "types-pyyaml>=6.0,<7",
 ]
 
 [project.scripts]
-gymnasium-rl-agent = "gymnasium_rl_agent:main"
+gymnasium-rl-agent = "gymnasium_rl_agent.main:main"
 
 [build-system]
 requires = ["uv_build>=0.13.7,<0.14.0"]
 build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+addopts = "-q --cov=gymnasium_rl_agent --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true

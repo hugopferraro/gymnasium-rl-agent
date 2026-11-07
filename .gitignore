@@ -8,3 +8,22 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Experiment outputs (selected final artifacts are versioned)
+artifacts/runs/
+artifacts/final/*
+!artifacts/final/.gitkeep
+!artifacts/final/README.md
+!artifacts/final/*.json
+!artifacts/final/*.yaml
+!artifacts/final/*.csv
+!artifacts/final/*.png
+!artifacts/final/*.keras
+!artifacts/final/*.mp4
+
+# Tool caches
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.tensorboard-info/
