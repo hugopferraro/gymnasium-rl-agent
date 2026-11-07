@@ -65,7 +65,18 @@ def run(args: argparse.Namespace) -> None:
     elif args.command == "tune":
         from .training.tuner import tune
 
-        print(tune(config, output_dir=args.output_dir))
+        tuning_dir = tune(config, output_dir=args.output_dir)
+        best_config = tuning_dir / "best_config.yaml"
+        _print_json(
+            {
+                "tuning_dir": str(tuning_dir),
+                "best_config": str(best_config),
+                "next_command": (
+                    "uv run gymnasium-rl-agent train "
+                    f'--config "{best_config}"'
+                ),
+            }
+        )
     elif args.command in {"evaluate", "demo"}:
         from .training.evaluator import evaluate_model, evaluate_random_policy, load_model
 

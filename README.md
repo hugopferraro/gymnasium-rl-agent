@@ -18,34 +18,72 @@ distingue `terminated` de `truncated`.
 No WSL2:
 
 ```bash
+export UV_PROJECT_ENVIRONMENT=.venv-wsl
 uv sync --extra gpu --extra video --group dev
 uv run python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 ```
 
 Para execução somente em CPU, use `uv sync --extra video --group dev`.
 
-## Uso
+## Fluxo completo da atividade
+
+Os comandos abaixo estão na ordem em que devem ser executados. Primeiro selecionamos os
+hiperparâmetros; somente depois treinamos e avaliamos o modelo final.
+
+### 1. Encontrar os melhores hiperparâmetros
 
 ```bash
-# Treinamento padrão
-uv run gymnasium-rl-agent train --config configs/lunar_lander.yaml
-
-# Busca aleatória de hiperparâmetros
 uv run gymnasium-rl-agent tune --config configs/tuning.yaml
+```
 
-# Avaliação final em 100 episódios e comparação aleatória
+O comando executa 12 trials e, ao terminar, informa a pasta criada. Dentro dela estarão
+`tuning_results.csv`, `best_trial.json` e `best_config.yaml`. O último arquivo combina os
+hiperparâmetros vencedores com o orçamento completo de 1.000 episódios para o treinamento final.
+
+### 2. Treinar o modelo final
+
+Use exatamente o `next_command` mostrado ao final do tuning. Exemplo:
+
+```bash
+uv run gymnasium-rl-agent train \
+  --config "artifacts/runs/<PASTA-DO-TUNING>/best_config.yaml"
+```
+
+Não use `configs/lunar_lander.yaml` nesta etapa: ele representa apenas a configuração inicial,
+antes do tuning.
+
+Depois do treinamento, copie os arquivos selecionados para a área final:
+
+```bash
+mkdir -p artifacts/final
+cp "artifacts/runs/<PASTA-DO-TREINO>/best_model.keras" artifacts/final/model.keras
+cp "artifacts/runs/<PASTA-DO-TREINO>/config.yaml" artifacts/final/config.yaml
+cp "artifacts/runs/<PASTA-DO-TREINO>/training.png" artifacts/final/training.png
+cp "artifacts/runs/<PASTA-DO-TUNING>/tuning_results.csv" artifacts/final/tuning_results.csv
+```
+
+### 3. Avaliar o modelo final
+
+Use a configuração final copiada na etapa anterior:
+
+```bash
 uv run gymnasium-rl-agent evaluate \
-  --config configs/lunar_lander.yaml \
+  --config artifacts/final/config.yaml \
   --model artifacts/final/model.keras \
   --episodes 100 \
   --include-random-baseline \
   --output artifacts/final/evaluation.json
+```
 
-# Gravação de demonstração
+### 4. Gravar a demonstração
+
+```bash
 uv run gymnasium-rl-agent demo \
-  --config configs/lunar_lander.yaml \
+  --config artifacts/final/config.yaml \
   --model artifacts/final/model.keras \
-  --record
+  --episodes 3 \
+  --record \
+  --video-dir artifacts/final/videos
 ```
 
 Cada treinamento registra configuração, versões, métricas CSV, TensorBoard, gráfico, resumo e

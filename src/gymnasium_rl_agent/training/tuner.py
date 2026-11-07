@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-from ..config import ExperimentConfig
+from ..config import AgentConfig, ExperimentConfig, save_config
 from .evaluator import evaluate_model
 from .trainer import train
 
@@ -50,6 +50,7 @@ def tune(config: ExperimentConfig, *, output_dir: str | Path | None = None) -> P
     rows: list[dict[str, object]] = []
     best_score = -float("inf")
     best_trial = -1
+    best_agent: AgentConfig | None = None
 
     for trial in range(config.tuning.trials):
         trial_config = _sample_config(config, rng, trial)
@@ -73,6 +74,10 @@ def tune(config: ExperimentConfig, *, output_dir: str | Path | None = None) -> P
         if evaluation.mean_return > best_score:
             best_score = evaluation.mean_return
             best_trial = trial
+            best_agent = trial_config.agent
+
+    if best_agent is None:  # Protected by configuration validation in normal CLI usage.
+        raise ValueError("Tuning requires at least one trial")
 
     results_path = root / "tuning_results.csv"
     with results_path.open("w", newline="", encoding="utf-8") as file:
@@ -82,4 +87,7 @@ def tune(config: ExperimentConfig, *, output_dir: str | Path | None = None) -> P
     (root / "best_trial.json").write_text(
         json.dumps({"trial": best_trial, "mean_return": best_score}, indent=2), encoding="utf-8"
     )
+    # Restore the full final-training budget while retaining only the winning agent parameters.
+    final_config = replace(config, agent=best_agent)
+    save_config(final_config, root / "best_config.yaml")
     return root
