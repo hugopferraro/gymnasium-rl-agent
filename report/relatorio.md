@@ -1,11 +1,9 @@
 # Agente Double DQN para controle autônomo no ambiente LunarLander-v3
 
 **Disciplina:** Inteligência Artificial II  
-**Atividade:** Contexto de Aprendizagem — Parada Obrigatória 2  
-**Grupo:** [NÚMERO DO GRUPO]  
-**Integrantes:** Hugo Porto Santos Ferraro; Aleixo Santana; [NOME 3]; [NOME 4]  
-**Instituição:** SENAI CIMATEC  
-**Data:** novembro de 2026
+**Atividade:** Contexto de Aprendizagem — Parada Obrigatória 2   
+**Integrantes:** Hugo Porto Santos Ferraro; Aleixo de Santana Martins; Flávio Fox Sandes Araújo Fernandes; Lucas Wanderley de Oliveira
+**Instituição:** SENAI CIMATEC
 
 ---
 
