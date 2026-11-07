@@ -8,6 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+.venv-*/
 
 # Experiment outputs (selected final artifacts are versioned)
 artifacts/runs/
@@ -27,3 +28,5 @@ artifacts/final/*
 .pytest_cache/
 .ruff_cache/
 .tensorboard-info/
+
+docs/
