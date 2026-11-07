@@ -1,0 +1,4 @@
+trial,mean_return,learning_rate,hidden_layers,batch_size,gamma,target_update_steps,epsilon_decay_steps,model_path
+0,-103.35172132914715,0.00043642856253592565,256x256,64,0.99,1000,50000,artifacts/runs/20261107T192526Z-lunar-lander-double-dqn-quick-tuning/trial-00/best_model.keras
+1,-107.87711941093602,0.00022642132853790053,256x128,128,0.995,2000,150000,artifacts/runs/20261107T192526Z-lunar-lander-double-dqn-quick-tuning/trial-01/best_model.keras
+2,-215.02474939291793,0.00044955703962741767,256x256,64,0.99,500,50000,artifacts/runs/20261107T192526Z-lunar-lander-double-dqn-quick-tuning/trial-02/best_model.keras

@@ -1,0 +1,23 @@
+{
+  "episodes_completed": 500,
+  "environment_steps": 168453,
+  "best_validation_score": 262.0907257422585,
+  "final_validation": {
+    "episodes": 5,
+    "mean_return": 234.51753676697385,
+    "median_return": 254.08287239102347,
+    "std_return": 57.67437205874447,
+    "min_return": 138.04489387551132,
+    "max_return": 283.1679452077411,
+    "confidence_low": 183.96464964388414,
+    "confidence_high": 285.0704238900635,
+    "success_rate": 0.8,
+    "returns": [
+      228.0368719606916,
+      138.04489387551132,
+      254.08287239102347,
+      283.1679452077411,
+      269.2551003999017
+    ]
+  }
+}

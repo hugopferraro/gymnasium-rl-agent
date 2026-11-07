@@ -71,11 +71,12 @@ def run(args: argparse.Namespace) -> None:
             {
                 "tuning_dir": str(tuning_dir),
                 "best_config": str(best_config),
-                "next_command": (
-                    "uv run gymnasium-rl-agent train "
-                    f'--config "{best_config}"'
-                ),
             }
+        )
+        print(
+            "\nNext command (copy exactly):\n"
+            f"uv run gymnasium-rl-agent train --config={best_config}",
+            flush=True,
         )
     elif args.command in {"evaluate", "demo"}:
         from .training.evaluator import evaluate_model, evaluate_random_policy, load_model
