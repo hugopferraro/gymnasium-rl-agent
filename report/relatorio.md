@@ -2,7 +2,7 @@
 
 **Disciplina:** Inteligência Artificial II  
 **Atividade:** Contexto de Aprendizagem — Parada Obrigatória 2   
-**Integrantes:** Hugo Porto Santos Ferraro; Aleixo de Santana Martins.
+**Integrantes:** Hugo Porto Santos Ferraro, Aleixo de Santana Martins.
 **Instituição:** SENAI CIMATEC
 
 ---
@@ -80,20 +80,20 @@ função de recompensa do ambiente.
 
 ### 2.1 Processo de decisão e retorno
 
-O problema pode ser representado como um processo de decisão de Markov. No instante \(t\), o
-agente observa \(s_t\), executa \(a_t\), recebe \(r_{t+1}\) e passa ao estado \(s_{t+1}\). O retorno
+O problema pode ser representado como um processo de decisão de Markov. No instante $t$, o
+agente observa $s_t$, executa $a_t$, recebe $r_{t+1}$ e passa ao estado $s_{t+1}$. O retorno
 descontado é definido por:
 
-\[
+$$
 G_t = \sum_{k=0}^{\infty} \gamma^k r_{t+k+1},
-\]
+$$
 
-em que \(\gamma\) é o fator de desconto. Neste projeto, \(\gamma=0{,}99\), atribuindo peso elevado
+em que $\gamma$ é o fator de desconto. Neste projeto, $\gamma=0{,}99$, atribuindo peso elevado
 a recompensas futuras sem eliminar a preferência por resultados mais imediatos.
 
 ### 2.2 Deep Q-Network
 
-O Q-learning busca aproximar \(Q(s,a)\), o retorno esperado ao selecionar uma ação em um estado e
+O Q-learning busca aproximar $Q(s,a)$, o retorno esperado ao selecionar uma ação em um estado e
 seguir a política aprendida. O Deep Q-Network (DQN) substitui uma tabela por uma rede neural, o
 que permite generalizar entre estados contínuos. O trabalho de Mnih et al. demonstrou a
 combinação de rede neural, replay de experiências e rede-alvo para estabilizar o aprendizado
@@ -107,19 +107,19 @@ a estabilidade [2].
 
 O alvo empregado neste projeto é:
 
-\[
+$$
 y_t = r_{t+1} + \gamma(1-d_t)
 Q_{\text{alvo}}\left(s_{t+1},
 \operatorname*{arg\,max}_a Q_{\text{on-line}}(s_{t+1},a)\right),
-\]
+$$
 
-em que \(d_t=1\) apenas quando há término natural (`terminated`). Uma interrupção por limite de
+em que $d_t=1$ apenas quando há término natural (`terminated`). Uma interrupção por limite de
 tempo (`truncated`) encerra o episódio, mas não anula automaticamente o valor estimado do próximo
 estado. Essa separação segue a API atual do Gymnasium [3].
 
 ### 2.3 Exploração e replay de experiências
 
-A política de coleta é *epsilon-greedy*: com probabilidade \(\epsilon\), seleciona-se uma ação
+A política de coleta é *epsilon-greedy*: com probabilidade $\epsilon$, seleciona-se uma ação
 aleatória; caso contrário, seleciona-se a ação de maior valor Q. O epsilon decai linearmente de
 1,00 para 0,05 durante 50.000 passos.
 
@@ -223,16 +223,16 @@ Saída linear (4 valores Q)
 
 O modelo possui 69.124 parâmetros treináveis:
 
-- primeira camada: \(8\times256+256=2.304\);
-- segunda camada: \(256\times256+256=65.792\);
-- saída: \(256\times4+4=1.028\).
+- primeira camada: $8 \times 256 + 256 = 2.304$;
+- segunda camada: $256 \times 256 + 256 = 65.792$;
+- saída: $256 \times 4 + 4 = 1.028$.
 
 Uma segunda rede de mesma arquitetura funciona como rede-alvo e não recebe gradientes. Seus
 pesos são substituídos pelos pesos on-line a cada 1.000 atualizações.
 
 ### 4.3 Otimização
 
-Foi utilizado Adam com taxa de aprendizado de aproximadamente \(4{,}3643\times10^{-4}\), perda
+Foi utilizado Adam com taxa de aprendizado de aproximadamente $4{,}3643 \times 10^{-4}$, perda
 Huber e norma máxima de gradiente igual a 10. A perda Huber combina comportamento quadrático para
 erros pequenos e linear para erros grandes, reduzindo a influência de alvos extremos.
 
@@ -260,12 +260,12 @@ configuração do ambiente e os caminhos CUDA necessários estão documentados n
 Não foi utilizado um dataset supervisionado externo. Em aprendizado por reforço on-line, o
 dataset é produzido pelo próprio agente durante a interação. Cada amostra possui:
 
-\[
+$$
 (s_t, a_t, r_{t+1}, s_{t+1}, d_t).
-\]
+$$
 
 Os estados e próximos estados possuem oito valores; a ação é um inteiro; a recompensa é escalar;
-e \(d_t\) registra término natural. A truncagem encerra a coleta do episódio, mas é mantida fora
+e $d_t$ registra término natural. A truncagem encerra a coleta do episódio, mas é mantida fora
 do indicador terminal armazenado, permitindo bootstrap correto.
 
 ### 5.2 Armazenamento e amostragem
@@ -314,7 +314,7 @@ O espaço amostrado foi:
 
 | Hiperparâmetro | Valores ou intervalo |
 |---|---|
-| taxa de aprendizado | log-uniforme entre \(10^{-4}\) e \(10^{-3}\) |
+| taxa de aprendizado | log-uniforme entre $10^{-4}$ e $10^{-3}$ |
 | camadas ocultas | `[128,128]`, `[256,128]` ou `[256,256]` |
 | batch | 64 ou 128 |
 | gamma | 0,99 ou 0,995 |
