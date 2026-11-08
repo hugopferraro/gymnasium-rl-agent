@@ -2,7 +2,7 @@
 
 **Disciplina:** Inteligência Artificial II  
 **Atividade:** Contexto de Aprendizagem — Parada Obrigatória 2   
-**Integrantes:** Hugo Porto Santos Ferraro; Aleixo de Santana Martins; Flávio Fox Sandes Araújo Fernandes; Lucas Wanderley de Oliveira
+**Integrantes:** Hugo Porto Santos Ferraro; Aleixo de Santana Martins.
 **Instituição:** SENAI CIMATEC
 
 ---
